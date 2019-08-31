@@ -1,0 +1,39 @@
+trigger:
+  - master
+
+variables:
+  subscription: 'Azure Subscription'
+  location: 'australiaeast'
+  resourceGroupNamePrefix: 'wb-search'
+  serviceName: common-data
+  storageAccountType: Standard_LRS
+  dataLakeNamePrefix: wbdatalake
+
+stages:
+  - stage: DeployToDev
+    displayName: Data Lake - Development
+    variables:
+      environment: dev
+    jobs:
+      - job: Deploy_DataLake
+        steps:
+          - task: AzureCLI@1
+            displayName: Create the resource group
+            inputs:
+              azureSubscription: $(subscription)
+              scriptLocation: 'inlineScript'
+              inlineScript: 'az group create --name $(resourceGroupNamePrefix)-$(environment) --location $(location) --tags environment=$(environment) service=$(serviceName)'
+
+          - task: AzureResourceGroupDeployment@2
+            name: deployBaseTemplate
+            displayName: Deploy search service template
+            inputs: 
+              azureSubscription: $(subscription)
+              resourceGroupName: $(resourceGroupNamePrefix)-$(environment)
+              location: $(location)
+              deploymentMode: incremental
+              deploymentName: WB_Search_$(environment)
+              csmFile: azuredeploy.json
+              overrideParameters: >
+                -tagEnvironment $(environment) 
+                -tagService $(serviceName)
