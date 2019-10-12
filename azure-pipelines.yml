@@ -27,7 +27,7 @@ stages:
           - task: AzureResourceGroupDeployment@2
             name: deployBaseTemplate
             displayName: Deploy search service template
-            inputs: 
+            inputs:
               azureSubscription: $(subscription)
               resourceGroupName: $(resourceGroupNamePrefix)-$(environment)
               location: $(location)
@@ -35,5 +35,18 @@ stages:
               deploymentName: WB_Search_$(environment)
               csmFile: azuredeploy.json
               overrideParameters: >
-                -tagEnvironment $(environment) 
+                -tagEnvironment $(environment)
                 -tagService $(serviceName)
+
+          - task: UsePythonVersion@0
+            displayName: Set Python version to $(python_version)
+            inputs:
+              versionSpec: '3.6'
+              architecture: 'x64'
+
+          - task: CmdLine@2
+            displayName: Prepare pipenv
+            inputs:
+                script: |
+                  pip3 install pipenv
+                  pipenv install
