@@ -1,0 +1,42 @@
+{
+    "name": "postcodes-csv-indexer",
+    "dataSourceName": "postcodes-blob-datasource",
+    "targetIndexName": "postcodes",
+    "parameters": {
+        "configuration": {
+            "parsingMode": "delimitedText",
+            "indexedFileNameExtensions": ".csv",
+            "firstLineContainsHeaders": true
+        }
+    },
+    "fieldMappings": [
+        {
+            "sourceFieldName": "id",
+            "targetFieldName": "id"
+        },
+        {
+            "sourceFieldName": "country_code",
+            "targetFieldName": "country_code"
+        },
+        {
+            "sourceFieldName": "postal_code",
+            "targetFieldName": "postal_code"
+        },
+        {
+            "sourceFieldName": "place_name",
+            "targetFieldName": "place_name"
+        },
+        {
+            "sourceFieldName": "admin_name1",
+            "targetFieldName": "state_name"
+        },
+        {
+            "sourceFieldName": "admin_code1",
+            "targetFieldName": "state_code"
+        },
+        {
+            "sourceFieldName": "location",
+            "targetFieldName": "location"
+        }
+    ]
+}

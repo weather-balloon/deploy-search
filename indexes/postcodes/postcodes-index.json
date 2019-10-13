@@ -1,0 +1,75 @@
+{
+    "name": "postcodes",
+    "fields": [
+        {
+            "name": "id",
+            "type": "Edm.String",
+            "key": true,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": true,
+            "sortable": true,
+            "facetable": false
+        },
+        {
+            "name": "country_code",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": true,
+            "sortable": true,
+            "facetable": false
+        },
+        {
+            "name": "postal_code",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": true,
+            "sortable": true,
+            "facetable": false
+        },
+        {
+            "name": "place_name",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": true,
+            "sortable": true,
+            "facetable": false
+        },
+        {
+            "name": "state_name",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": true,
+            "sortable": true,
+            "facetable": false
+        },
+        {
+            "name": "state_code",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": true,
+            "sortable": true,
+            "facetable": false
+        },
+        {
+            "name": "location",
+            "type": "Edm.GeographyPoint",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": false,
+            "sortable": false,
+            "facetable": false
+        }
+    ]
+}

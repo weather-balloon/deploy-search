@@ -1,0 +1,12 @@
+{
+    "name": "postcodes-blob-datasource",
+    "description": "Configures a Blob as the postcode datasource",
+    "type": "azureblob",
+    "container": {
+        "name": "geonames-org",
+        "query": "postcodes/transform"
+    },
+    "credentials": {
+        "connectionString": ""
+    }
+}

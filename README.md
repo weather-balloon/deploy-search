@@ -66,3 +66,4 @@ To find the service principal:
 * [Azure Search - index CSV Blobs](https://docs.microsoft.com/en-au/azure/search/search-howto-index-csv-blobs)
 * [Azure REST API auth](https://docs.microsoft.com/en-us/rest/api/azure/#create-the-request)
   * [Calling Azure REST API via curl](https://medium.com/@mauridb/calling-azure-rest-api-via-curl-eb10a06127)
+* [Service limits in Azure Search](https://docs.microsoft.com/en-au/azure/search/search-limits-quotas-capacity)
