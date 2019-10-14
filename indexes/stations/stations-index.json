@@ -1,0 +1,95 @@
+{
+    "name": "stations",
+    "fields": [
+        {
+            "name": "id",
+            "type": "Edm.String",
+            "key": true,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": true,
+            "sortable": true,
+            "facetable": false
+        },
+        {
+            "name": "country",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": true,
+            "sortable": true,
+            "facetable": false
+        },
+        {
+            "name": "country_code",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": true,
+            "sortable": true,
+            "facetable": false
+        },
+        {
+            "name": "location",
+            "type": "Edm.GeographyPoint",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": false,
+            "sortable": false,
+            "facetable": false
+        },
+        {
+            "name": "name",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": true,
+            "sortable": true,
+            "facetable": false
+        },
+        {
+            "name": "site",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": true,
+            "sortable": true,
+            "facetable": false
+        },
+        {
+            "name": "state",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": true,
+            "sortable": true,
+            "facetable": true
+        },
+        {
+            "name": "start_year",
+            "type": "Edm.Int32",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": false,
+            "sortable": true,
+            "facetable": true
+        },
+        {
+            "name": "end_year",
+            "type": "Edm.Int32",
+            "key": false,
+            "retrievable": true,
+            "filterable": true,
+            "searchable": false,
+            "sortable": true,
+            "facetable": true
+        }
+    ]
+}

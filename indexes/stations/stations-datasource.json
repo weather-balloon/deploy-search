@@ -1,0 +1,11 @@
+{
+    "name": "stations-table-datasource",
+    "description": "Configures a table as the stations datasource",
+    "type": "azuretable",
+    "container": {
+        "name": "WeatherStations"
+    },
+    "credentials": {
+        "connectionString": ""
+    }
+}

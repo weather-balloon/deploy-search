@@ -1,0 +1,49 @@
+{
+    "name": "stations-table-indexer",
+    "dataSourceName": "stations-table-datasource",
+    "targetIndexName": "stations",
+    "fieldMappings": [
+        {
+            "sourceFieldName": "Key",
+            "targetFieldName": "id",
+            "mappingFunction": {
+                "name": "base64Encode",
+                "parameters": {
+                    "useHttpServerUtilityUrlTokenEncode": false
+                }
+            }
+        },
+        {
+            "sourceFieldName": "country",
+            "targetFieldName": "country"
+        },
+        {
+            "sourceFieldName": "country_code",
+            "targetFieldName": "country_code"
+        },
+        {
+            "sourceFieldName": "location",
+            "targetFieldName": "location"
+        },
+        {
+            "sourceFieldName": "name",
+            "targetFieldName": "name"
+        },
+        {
+            "sourceFieldName": "site",
+            "targetFieldName": "site"
+        },
+        {
+            "sourceFieldName": "state",
+            "targetFieldName": "state"
+        },
+        {
+            "sourceFieldName": "start_year",
+            "targetFieldName": "start_year"
+        },
+        {
+            "sourceFieldName": "end_year",
+            "targetFieldName": "end_year"
+        }
+    ]
+}
