@@ -2,3 +2,5 @@
 data/
 test.py
 .vscode
+__pycache__
+.azsearchconfig
