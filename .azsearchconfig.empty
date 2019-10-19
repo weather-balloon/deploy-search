@@ -1,0 +1,8 @@
+# Refer to https://pypi.org/project/ConfigArgParse/ for syntax
+
+tenantId:
+servicePrincipalId:
+servicePrincipalKey:
+subscription:
+resourceGroup:
+searchServiceName:

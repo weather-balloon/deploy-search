@@ -1,59 +1,84 @@
-# Azure Search configuration for GeoNames postcodes
+# Azure Search configuration
 
 [![Build Status](https://dev.azure.com/weatherballoon/Weather%20Balloon/_apis/build/status/weather-balloon.deploy-search?branchName=master)](https://dev.azure.com/weatherballoon/Weather%20Balloon/_build/latest?definitionId=13&branchName=master)
 
-## Background
+Script and index definitions for deploying Azure Search indexes.
 
-Login:
+An Azure search service can be deployed with `azuredeploy.json`. The `azure-pipelines.yml`
+definition automates deployment using Azure Pipelines. Note that the default Azure Search SKU
+is `free` and this has limits that will prevent all of the data being indexed.
 
-    az login
+The `indexes/` folder contains the index, datasource and indexer definitions;
 
-Check for locations with:
+- `postcodes` indexes the postcodes in the CSV file held in Blob storage.
+See the [fn-ps-format-postcodes](https://github.com/weather-balloon/fn-ps-format-postcodes)
+project for the PowerShell-based Function used to prep the data
+- `stations` indexes the weather station data in an Azure Storage Table.
+See the [fn-process-weather-stations](https://github.com/weather-balloon/fn-process-weather-stations)
+project for the Python-based Function used to prep the data
 
-    az account list-locations
+## The challenge
 
-Get a list of roles relating to search:
+Azure Search always seems a little out of step with many of its Azure colleagues. The
+setup of indexes is rather manual and requires either Portal- or API-based config
+(i.e. no CLI). Further to this is the limited ability to udpate indexes and their related
+datasources and indexers. This make it all a bit tricky in CD pipelines - it's almost
+like they need an Azure Search DACPAC...
 
-    az role definition list --query "[].{Name: name, Description: description, Role_Name: roleName}[?contains(Role_Name, 'Search')]" -o table
+So I wrote a little Python script to try and do some of the basics:
 
-You'll need to setup a service principal and store its details in a Key Vault:
+- Create an index if it doesn't exist
+- Update an index if possible or drop/re-create if needed
+- Create/update an indexer
+- Run an indexer and check its status
+- Create/update a datasource
+- Delete an index/indexer/datasource
 
-```bash
-SP_NAME=wb-search-configurator
-AZURE_KEYVAULT_RG=wb-management
-AZURE_KEYVAULT_LOCATION=centralus
-AZURE_KEYVAULT_NAME=wb-key-vault
-AZURE_SEARCH_NAME=wb-search-test
-AZURE_SEARCH_RG=wb-search
+## Running
 
-# Check to see if KV exists, create if not
-az keyvault show --name $AZURE_KEYVAULT_NAME --resource-group $AZURE_KEYVAULT_RG || \
-    az keyvault create --name $AZURE_KEYVAULT_NAME \
-                    --resource-group $AZURE_KEYVAULT_RG \
-                    --location $AZURE_KEYVAULT_LOCATION \
-                    --tags environment=management service=wb-management
+The `configure_search.py` script provides a number of functions for setting up Azure Search. You can
+check out the command with:
 
-# Generate the SP and store the password in KV
-az keyvault secret set \
-    --vault-name $AZURE_KEYVAULT_NAME \
-    --name $SP_NAME-password \
-    --value $(az ad sp create-for-rbac \
-                    --name "https://$SP_NAME" \
-                    --scopes $(az search service show --name $AZURE_SEARCH_NAME --resource-group $AZURE_SEARCH_RG --query id --output tsv) \
-                    --role "Search Service Contributor" \
-                    --query password \
-                    --output tsv)
+    pipenv run ./configure_search.py -h
 
-# Add the SP username to KV
-az keyvault secret set \
-    --vault-name $AZURE_KEYVAULT_NAME \
-    --name $SP_NAME-user \
-    --value $SP_NAME
-```
+The [ConfigArgParse](https://pypi.org/project/ConfigArgParse/) library is used so that
+you can set parameters in a file or environment variables. The `azsearchconfig.empty` file
+provides a template - just copy it to `azsearchconfig` and add your settings,
 
-To find the service principal:
+_Note_: The script can read the `$servicePrincipalId`, `$servicePrincipalKey` and `$tenantId`
+environment variables or accept them as parameters. These were selected to match the
+[Azure CLI task's](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-cli?view=azure-devops)
+`addSpnToEnvironment` parameter.
 
-    az ad sp list --spn http://$SP_NAME
+When setting up a datasource you can pass in the connection string via the command line
+or an environment variable:
+
+    export connectionString="<CONNECTION STRING>"
+
+Create the postcode index and indexer:
+
+    pipenv run ./configure_search index create --file indexes/postcodes/postcodes-index.json
+
+    pipenv run ./configure_search datasource create \
+        --file indexes/postcodes/postcodes-datasource.json \
+        --update
+
+    pipenv run ./configure_search indexer create \
+        --file indexes/postcodes/postcodes-csvindexer.json \
+        --update
+
+
+Create the weather station index and indexer:
+
+    pipenv run ./configure_search index create --file indexes/stations/stations-index.json
+
+    pipenv run ./configure_search datasource create \
+        --file indexes/stations/stations-datasource.json \
+        --update
+
+    pipenv run ./configure_search indexer create \
+        --file indexes/stations/stations-tableindexer.json \
+        --update
 
 
 ## References
