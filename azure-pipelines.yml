@@ -41,12 +41,15 @@ stages:
           - task: UsePythonVersion@0
             displayName: Set Python version to $(python_version)
             inputs:
-              versionSpec: '3.6'
+              versionSpec: '3.7'
               architecture: 'x64'
 
-          - task: CmdLine@2
-            displayName: Prepare pipenv
+          - task: AzureCLI@2
+            displayName: Configure indexes
             inputs:
-                script: |
+                azureSubscription: $(subscription)
+                scriptType: bash
+                addSpnToEnvironment: true
+                inlineScript: |
                   pip3 install pipenv
                   pipenv install
