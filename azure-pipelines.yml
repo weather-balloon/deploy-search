@@ -11,11 +11,11 @@ variables:
 
 stages:
   - stage: DeployToDev
-    displayName: Data Lake - Development
+    displayName: Search - Development
     variables:
       environment: dev
     jobs:
-      - job: Deploy_DataLake
+      - job: Deploy_Search
         steps:
           - task: AzureCLI@1
             displayName: Create the resource group
