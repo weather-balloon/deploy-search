@@ -28,7 +28,7 @@ like they need an Azure Search DACPAC...
 So I wrote a little Python script to try and do some of the basics:
 
 - Create an index if it doesn't exist
-- Update an index if possible or drop/re-create if needed
+- Update an index if possible or drop/re-create if needed (forced)
 - Create/update an indexer
 - Run an indexer and check its status
 - Create/update a datasource
@@ -36,14 +36,14 @@ So I wrote a little Python script to try and do some of the basics:
 
 ## Running
 
-The `configure_search.py` script provides a number of functions for setting up Azure Search. You can
+The `configure_search` script provides a number of functions for setting up Azure Search. You can
 check out the command with:
 
-    pipenv run ./configure_search.py -h
+    pipenv run ./configure_search -h
 
 The [ConfigArgParse](https://pypi.org/project/ConfigArgParse/) library is used so that
 you can set parameters in a file or environment variables. The `azsearchconfig.empty` file
-provides a template - just copy it to `azsearchconfig` and add your settings,
+provides a template - just copy it to `.azsearchconfig` and add your settings,
 
 _Note_: The script can read the `$servicePrincipalId`, `$servicePrincipalKey` and `$tenantId`
 environment variables or accept them as parameters. These were selected to match the
@@ -55,30 +55,8 @@ or an environment variable:
 
     export connectionString="<CONNECTION STRING>"
 
-Create the postcode index and indexer:
-
-    pipenv run ./configure_search index create --file indexes/postcodes/postcodes-index.json
-
-    pipenv run ./configure_search datasource create \
-        --file indexes/postcodes/postcodes-datasource.json \
-        --update
-
-    pipenv run ./configure_search indexer create \
-        --file indexes/postcodes/postcodes-csvindexer.json \
-        --update
-
-
-Create the weather station index and indexer:
-
-    pipenv run ./configure_search index create --file indexes/stations/stations-index.json
-
-    pipenv run ./configure_search datasource create \
-        --file indexes/stations/stations-datasource.json \
-        --update
-
-    pipenv run ./configure_search indexer create \
-        --file indexes/stations/stations-tableindexer.json \
-        --update
+You can see the deployment script in `deploy/deploy-indexes.sh` for an example
+of using the `configure_search` tool.
 
 
 ## References
