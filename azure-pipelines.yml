@@ -72,5 +72,6 @@ stages:
               addSpnToEnvironment: true
             env:
               resourceGroup: $(resourceGroupNamePrefix)-$(environment)
+              searchServiceName: $(searchServiceName)
               datalakeAccountName: wbdatalake$(environment)
               datalakeResourceGroup: wb-datalake-$(environment)
