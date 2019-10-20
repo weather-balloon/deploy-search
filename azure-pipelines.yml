@@ -46,7 +46,7 @@ stages:
             inputs:
               targetType: inline
               script: |
-                Write-Host '$(baseDeploymentOutput)'
+                Write-Host '$(deployBaseTemplate)'
                 $outputs = ConvertFrom-Json '$(deployBaseTemplate)'
                 $searchServiceName = $outputs.searchServiceName.value
                 Write-Host "##vso[task.setvariable variable=searchServiceName;]$searchServiceName"
