@@ -39,6 +39,7 @@ stages:
               overrideParameters: >
                 -tagEnvironment $(environment)
                 -tagService $(serviceName)
+              deploymentOutputs: deployBaseTemplate
 
           - task: PowerShell@2
             name: parseOutputs
