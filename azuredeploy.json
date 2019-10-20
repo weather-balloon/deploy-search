@@ -103,5 +103,11 @@
                 "hostingMode": "[parameters('searchServicesHostingMode')]"
             }
         }
-    ]
+    ],
+    "outputs": {
+        "searchServiceName": {
+            "type": "string",
+            "value": "[variables('searchServicesName')]"
+        }
+    }
 }

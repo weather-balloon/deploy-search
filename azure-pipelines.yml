@@ -16,6 +16,8 @@ stages:
       environment: dev
     jobs:
       - job: Deploy_Search
+        pool:
+          vmImage: 'ubuntu-18.04'
         steps:
           - task: AzureCLI@1
             displayName: Create the resource group
@@ -38,18 +40,36 @@ stages:
                 -tagEnvironment $(environment)
                 -tagService $(serviceName)
 
+          - task: PowerShell@2
+            name: parseOutputs
+            displayName: Parse the deployment outputs
+            inputs:
+              targetType: inline
+              script: |
+                Write-Host '$(baseDeploymentOutput)'
+                $outputs = ConvertFrom-Json '$(deployBaseTemplate)'
+                $searchServiceName = $outputs.searchServiceName.value
+                Write-Host "##vso[task.setvariable variable=searchServiceName;]$searchServiceName"
+
           - task: UsePythonVersion@0
-            displayName: Set Python version to $(python_version)
+            displayName: Set Python version to 3.7
             inputs:
               versionSpec: '3.7'
               architecture: 'x64'
 
+          - script: |
+              pip3 install pipenv
+              pipenv install
+            displayName: 'pipenv install'
+
           - task: AzureCLI@2
-            displayName: Configure indexes
+            displayName: 'Configure indexes'
             inputs:
-                azureSubscription: $(subscription)
-                scriptType: bash
-                addSpnToEnvironment: true
-                inlineScript: |
-                  pip3 install pipenv
-                  pipenv install
+              azureSubscription: $(subscription)
+              scriptType: bash
+              scriptPath: 'deploy/deploy-indexes.sh'
+              addSpnToEnvironment: true
+            env:
+              resourceGroup: $(resourceGroupNamePrefix)-$(environment)
+              datalakeAccountName: wbdatalake$(environment)
+              datalakeResourceGroup: wb-datalake-$(environment)
