@@ -71,4 +71,4 @@ Where `1` designates a 1km radius. Let's broaden our search:
 
 It's then possible to order by the distance:
 
-    $filter=geo.distance(location, geography'POINT(151.0646 -33.8521)') le 5&$select=site,state,name&$orderby=geo.distance
+    $filter=geo.distance(location, geography'POINT(151.0646 -33.8521)') le 5&$select=site,state,name&$orderby=geo.distance(location, geography'POINT(151.0646 -33.8521)')
