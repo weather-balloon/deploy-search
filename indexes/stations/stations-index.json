@@ -19,7 +19,7 @@
             "filterable": true,
             "searchable": true,
             "sortable": true,
-            "facetable": false
+            "facetable": true
         },
         {
             "name": "country_code",
@@ -29,7 +29,7 @@
             "filterable": true,
             "searchable": true,
             "sortable": true,
-            "facetable": false
+            "facetable": true
         },
         {
             "name": "location",
@@ -90,6 +90,37 @@
             "searchable": false,
             "sortable": true,
             "facetable": true
+        }
+    ],
+    "suggesters": [
+        {
+            "name": "station_name",
+            "searchMode": "analyzingInfixMatching",
+            "sourceFields": [
+                "name"
+            ]
+        }
+    ],
+    "scoringProfiles": [
+        {
+            "name": "geo",
+            "text": {
+                "weights": {
+                    "name": 5
+                }
+            },
+            "functions": [
+                {
+                    "type": "distance",
+                    "boost": 5,
+                    "fieldName": "location",
+                    "interpolation": "logarithmic",
+                    "distance": {
+                        "referencePointParameter": "currentLocation",
+                        "boostingDistance": 10
+                    }
+                }
+            ]
         }
     ]
 }

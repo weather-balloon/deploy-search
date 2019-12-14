@@ -8,12 +8,12 @@ An Azure search service can be deployed with `azuredeploy.json`. The `azure-pipe
 definition automates deployment using Azure Pipelines. Note that the default Azure Search SKU
 is `free` and this has limits that will prevent all of the data being indexed.
 
-The `indexes/` folder contains the index, datasource and indexer definitions;
+The `indexes/` folder contains the index, datasource and indexer definitions:
 
-- `postcodes` indexes the postcodes in the CSV file held in Blob storage.
+- [`postcodes`](indexes/postcodes/) indexes the postcodes in the CSV file held in Blob storage.
 See the [fn-ps-format-postcodes](https://github.com/weather-balloon/fn-ps-format-postcodes)
 project for the PowerShell-based Function used to prep the data
-- `stations` indexes the weather station data in an Azure Storage Table.
+- [`stations`](indexes/stations) indexes the weather station data in an Azure Storage Table.
 See the [fn-process-weather-stations](https://github.com/weather-balloon/fn-process-weather-stations)
 project for the Python-based Function used to prep the data
 
